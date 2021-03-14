@@ -1,0 +1,30 @@
+{% assign page_link = site.domain | append: url %}
+{% capture tweet_text %}
+    {{title}}, an article from {{site.title}}: {{page_link}}
+{% endcapture %}
+{% assign twitter_url = 'https://twitter.com/intent/tweet?text=' | append: tweet_text %}
+{% assign facebook_url = "https://www.facebook.com/sharer/sharer.php?u=" | append: page_link %}
+<div class="flex my-4 items-center">
+    <button class="bg-dark dark:bg-light text-light dark:text-dark px-2 py-1 hover:bg-dark-darkened dark:hover:bg-light-darkened transition-colors" data-flyout aria-controls="{{id}}" aria-label="Show options to share this post" aria-expanded="false">Share</button>
+    <ul class="ml-1 animate-fade-in hidden text-sm" id="{{id}}">
+        <li class="ml-3">
+            <a class="flex items-center" target="_blank" rel="noreferrer" href="{{twitter_url}}">
+                <span>{{ '/_includes/icons/twitter.svg' | svgContents:'w-3 h-3 mr-1' }}</span>Twitter</a>
+        </li>
+        <li class="ml-3">
+            <a class="flex items-center" target="_blank" rel="noreferrer" href="{{facebook_url}}">
+                <span>{{ '/_includes/icons/facebook.svg' | svgContents:'w-3 h-3 mr-1' }}</span>Facebook</a>
+        </li>
+        <li class="ml-3">
+            <div class="w-8" data-click-to-copy>
+                <button class="flex items-center ">
+                    <span data-action-icon>{{ '/_includes/icons/copy.svg' | svgContents:'w-3 h-3 mr-1' }}</span>
+                    <span data-action-label>Copy a link</span>
+                    <span class="hidden" data-success-icon>{{ '/_includes/icons/checkmark.svg' | svgContents:'w-3 h-3 mr-1' }}</span>
+                    <span class="hidden" data-success-label>Copied to clipboard</span>
+                </button>
+                <input class="hidden" type="text" value="{{page_link}}">
+            </div>
+        </li>
+    </ul>
+</div>

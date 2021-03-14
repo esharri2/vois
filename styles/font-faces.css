@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("manrope-regular.woff2") format("woff2"),
+    url("Manrope-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Overpass";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local(""), url("overpass-v5-latin-regular.woff2") format("woff2"),
+    url("overpass-v5-latin-regular.woff") format("woff");
+}

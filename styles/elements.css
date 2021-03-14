@@ -1,0 +1,31 @@
+html {
+  overscroll-behavior: none;
+}
+
+/* Prevent scroll bar shift when navigation between pages */
+@media screen and (min-width: 960px) {
+  main {
+    margin-left: calc(100vw - 100%);
+    margin-right: 0;
+  }
+}
+
+strong {
+  /* ALERT: Change this to a numerical font weight if you are loading a bold font */
+  font-weight: bolder;
+}
+
+svg {
+  fill: currentColor;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline-color: currentColor;
+  outline-offset: 6px;
+}
+
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}

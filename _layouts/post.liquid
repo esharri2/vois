@@ -1,0 +1,18 @@
+---
+layout: default
+---
+{% capture view_more %}
+<div class="container">
+    <a class="flex items-center" href="/blog#{{page.fileSlug}}">{{ '/_includes/icons/chevron-left.svg' | svgContents:'w-3 h-3 mr-1' }}View more posts</a>
+</div>
+{% endcapture %}
+
+{{view_more}}
+<article class="container pb-4">
+    {% render 'heading', level: 1, text: title%}
+    <p>{% prettyDate date %}</p>
+    {% render 'share', title: title, url: page.url, description: description, site: site, id: "share-a" %}
+    <div class="md max-w-prose text-dark dark:text-light">
+        {{content}}
+    </div>
+</article>

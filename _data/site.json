@@ -1,0 +1,12 @@
+{
+  "title": "EvEleventy",
+  "description": "A simple Eleventy starter project.",
+  "domain": "https://competent-bohr-e0b4b9.netlify.app",
+  "meta_image": "beach.JPG",
+  "meta_image_alt": "A sunset at the beach.",
+  "theme_color": "#2b5797",
+  "builtBy": {
+    "name": "EH",
+    "url": "https://www.evan-harrison.com"
+  }
+}
