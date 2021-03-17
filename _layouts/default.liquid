@@ -1,22 +1,11 @@
 <!DOCTYPE html>
-<html class="overscroll-auto font-body " lang="en">
-    {% render 'head', site: site, page: page, title: title %}
-    <body class="relative text-dark dark:text-light bg-light
-            dark:bg-dark transition-colors">
-        {% render 'ie-notice'%}
-        {% render 'skip-to-content' %}
-        {% render 'back-to-top' %}
-        <div class="flex justify-end bg-dark  dark:bg-light">
-            {% include 'color-switch' %}
-        </div>
-        <header class="full-bleed py-3 bg-dark dark:bg-light lg:p-0">
-            <div class="container">
-                {% render 'navigation', navigation: navigation, page: page %}
-            </div>
-        </header>
-        <main class="pt-8 mb-6" id="main">
-            {{ content }}
-        </main>
-        {% render 'footer', builtBy: site.builtBy, navigation: navigation_footer %}
-    </body>
+<html lang="en">
+  {% render 'head', site: site, page: page, title: title %}
+  <body>
+    {% render 'ie-notice'%}
+    <header>header</header>
+    <main id="main">
+      {{content}}
+    </main>
+  </body>
 </html>
