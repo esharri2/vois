@@ -1,0 +1,15 @@
+<header class="flex items-center justify-between my-3">
+    <a
+        class="text-accent uppercase font-display text-3xl
+            text-center"
+        href="/">{{ title }}</a>
+    <nav class="flex items-center">
+        <ul class="flex">
+            {% for item in nav %}
+                <li class="mr-4 last:mr-0 ">
+                    <a class="uppercase text-l font-strong" href="{{ item.link }}">{{ item.label }}</a>
+                </l>
+            {% endfor %}
+        </ul>
+    </nav>
+</header>

@@ -1,0 +1,39 @@
+.btn {
+  @apply bg-accent text-light flex justify-center py-1 lg:py-2 transition-all rounded-lg;
+  box-shadow: 0px 5px #8b0c27;
+}
+
+.btn:hover {
+  @apply bg-accentMedium text-lightMedium;
+  box-shadow: 0 4px #6f0a1f;
+}
+
+.btn:focus {
+  outline: 1px solid #020122;
+  outline-offset: 4px;
+}
+
+.btn:active {
+  box-shadow: none;
+  transform: translateY(4px)
+}
+
+.btn.btn--secondary {
+  box-shadow: none;
+  color:inherit;
+  background-color: transparent;
+}
+
+.btn:disabled {
+  @apply bg-gray text-grayLight shadow-none relative;
+  top: 4px;
+}
+
+.control-bar .btn {
+  width: 32%;  
+}
+
+.input {
+  @apply border-b-2 border-accent bg-transparent border-solid w-full bg-light p-1;
+}
+

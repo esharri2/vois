@@ -1,0 +1,31 @@
+/*
+COMPOSITION
+Layout styles/systems
+"The composition layer’s job is to create flexible, component-agnostic layout systems that support as many variants of content as possible."
+via https://cube.fyi/composition/#main-content
+*/
+
+
+/* 
+STACK 
+Vertical stack
+via https://cube.fyi/composition/#main-content
+*/
+.stack > * + * {
+  margin-top: var(--flow-space, 1em);
+}
+
+/*
+FLOW & FILL
+Wrapping row of children with ideal widths; children expand to fill space
+*/
+.flow-fill {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flow-fill > * {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: var(--ideal-width, 30ch);
+}

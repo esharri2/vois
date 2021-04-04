@@ -1,8 +1,14 @@
 const easing = "linear";
 const colors = {
-  spaceCadet: "#2E294E",
-  babyPink: "#E8C1C5",
-  gray: "#e7e7e7",
+  darkPurp: "#020122",
+  paradisePink: "#EE4266",
+  paradisePinkMedium: "#eb264f",
+  paradisePinkDark: "#8b0c27",
+  paradisePinkDarkest: "#6f0a1f",
+  honeydew: "#F3FCF0",
+  honeydewMedium: "#d2f3c6",
+  charcoal: "#495159",
+  gray: "#dcdcdc",
 };
 
 module.exports = {
@@ -29,20 +35,26 @@ module.exports = {
       none: "none",
     },
     colors: {
-      dark: colors.spaceCadet,
-      "dark-darkened": "#161427",
-      light: colors.babyPink,
-      "light-darkened": "#b5434f",
-      gray: colors.gray,
+      dark: colors.darkPurp,
+      light: colors.honeydew,
+      lightMedium: colors.honeydewMedium,
+      accent: colors.paradisePink,
+      accentMedium: colors.paradisePinkMedium,
+      accentDark: colors.paradisePinkDark,
+      accentDarkest: colors.paradisePinkDarkest,
+      gray: colors.charcoal,
+      grayLight: colors.gray,
       current: "currentColor",
+      transparent: "transparent",
     },
     container: {
       center: true,
       padding: "2rem",
     },
     fontFamily: {
-      display: ["Manrope", "sans-serif"],
-      body: ["Overpass", "Helvetica", "sans-serif"],
+      display: ["Roboto Condensed Bold Italic", "sans-serif"],
+      body: ["Roboto Condensed Light", "Helvetica", "sans-serif"],
+      strong: ["Roboto Condensed", "Helvetica", "sans-serif"],
     },
     screens: {
       sm: "480px",
@@ -66,6 +78,9 @@ module.exports = {
         "fade-in": `fadeIn .2s ${easing}`,
         "slide-left": `slideLeft .2s ${easing}`,
       },
+      gridTemplateColumns: {
+        "custom-4": "2ch 4fr 1fr",
+      },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0" },
@@ -85,6 +100,7 @@ module.exports = {
   variants: {
     extend: {
       padding: ["first", "last"],
+      margin: ["first", "last"],
     },
   },
 };

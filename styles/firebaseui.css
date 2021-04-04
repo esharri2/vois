@@ -1,0 +1,10 @@
+#firebaseui-auth-container button {
+    background-color: #EE4266 !important;
+}
+#firebaseui-auth-container button[data-provider-id="anonymous"] {
+    background-color: #020122 !important;
+}
+
+#firebaseui-auth-container button.firebaseui-idp-button {
+    @apply text-light;
+}
