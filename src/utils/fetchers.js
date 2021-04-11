@@ -1,57 +1,60 @@
-const defaults = () => ({
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+export const getSequences = async (userId) => {
+  return new Promise((resolve, reject) => {
+    window.db
+      .ref(`users/${userId}/sequences`)
+      .get()
+      .then((data) => {
+        if (!data.val()) {
+          resolve([]);
+        }
+        const sequences = Object.entries(data.val()).map(([key, value]) => {
+          const obj = value;
+          const durationInSeconds = obj.actions
+            .map((action) => action.duration)
+            .reduce((a, b) => a + b, 0);
+          const minutes = `${Math.floor(durationInSeconds / 60)}`.padStart(
+            2,
 
-const getDefaults = {
-  method: "GET",
+            0
+          );
+          const seconds = `${durationInSeconds - minutes * 60}`.padStart(2, 0);
+          const duration = `${minutes}:${seconds}`;
+          value.id = key;
+          value.duration = duration;
+          return obj;
+        });
+        const sortedSequences = sequences.sort((a, b) => {
+          const nameA = a.title.toUpperCase(); 
+          const nameB = b.title.toUpperCase(); 
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+
+          return 0;
+        });
+        resolve(sortedSequences);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 };
 
-const postDefaults = {
-  method: "POST",
-};
-
-const deleteDefaults = {
-  method: "DELETE",
-};
-
-const getOptions = (options = {}, token = null) => {
-  return { ...defaults(token), ...getDefaults, ...options };
-};
-
-const postOptions = (options = {}, token = null) => {
-  return { ...defaults(token), ...postDefaults, ...options };
-};
-
-const deleteOptions = (options = {}, token = null) => {
-  return { ...defaults(token), ...deleteDefaults, ...options };
-};
-
-const handleResponse = async (response) => {
-  let json;
-  try {
-    json = await response.json();
-  } catch (error) {
-    console.error(error);
-    console.error("Response does not contain json.");
-    throw new Error();
+// TODO does this need to return something?
+export const postSequence = (userId, actions) => {
+  if (typeof userId !== "string" || typeof actions !== "object") {
+    throw new Error("Arguments not correct type");
   }
-  if (!response.ok) throw json;
-  return json;
+  const sequenceListRef = window.db.ref(`users/${userId}/sequences`);
+  const newSequenceRef = sequenceListRef.push();
+  newSequenceRef.set(actions);
 };
 
-export const postSequence = (userId, body) => {
-  window.db.ref(`users/${userId}`).set({ derp: "hey there" });
-};
+export const postUser = (userId, email) =>
+  window.db.ref(`users/${userId}`).set({ email });
 
-// function writeUserData(userId, name, email, imageUrl) {
-//   firebase
-//     .database()
-//     .ref("users/" + userId)
-//     .set({
-//       username: name,
-//       email: email,
-//       profile_picture: imageUrl,
-//     });
-// }
+export const deleteSequence = (userId, sequenceId) => 
+  window.db.ref(`users/${userId}/sequences/${sequenceId}`).remove();

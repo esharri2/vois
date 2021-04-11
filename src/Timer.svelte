@@ -1,8 +1,10 @@
 <script>
   import { flip } from "svelte/animate";
   import { fade, fly } from "svelte/transition";
-  import { userId } from "./stores.js";
   import { postSequence } from "./utils/fetchers";
+  export let actions;
+  export let user;
+
   import Pause from "./icons/Pause.svelte";
   import Play from "./icons/Play.svelte";
   import Save from "./icons/Save.svelte";
@@ -12,24 +14,35 @@
   import Delete from "./icons/Delete.svelte";
 
   let title = "";
-  let actions = [
-    { name: "My first action", duration: 30, id: 2342 },
-    { name: "My second action", duration: 60, id: 245245 },
-  ];
   let hasChanged = false;
-  $: if (actions[actions.length - 1].duration !== 0) {
-    actions.push({ name: "none", duration: 0, id: new Date().getTime() });
-  }
-
   let isPlaying = false;
   let isPaused = false;
   let secondsElapsedInAction = 0;
-  let currentPlayIndex = 0;
+  let actionIndex = -1;
+  let timerId;
+
+  // Add a placeholder action when the last action in the sequence has a duration entered
+  $: if (actions[actions.length - 1].duration) {
+    actions.push({ name: "", duration: "", id: new Date().getTime() });
+  }
+
+  // $: actions.forEach(action => {
+  //   action.duration = parseInt(action.duration, 10);
+  //   console.log("hi")
+  // })
+
+  // Progress to next action when elapsed time is equal to current action duration
+  $: if (
+    isPlaying &&
+    secondsElapsedInAction === actions[actionIndex].duration
+  ) {
+    startAction();
+  }
 
   const handleSave = (event) => {
     event.preventDefault();
-    const body = { title };
-    postSequence($userId, body);
+    postSequence($user?.uid, { title, actions });
+    hasChanged = false;
   };
 
   const handlePlayClick = (event) => {
@@ -39,20 +52,46 @@
     } else {
       isPlaying = true;
       isPaused = false;
+      startAction();
     }
   };
 
-  const handleStopClick = (event) => {
+  const startAction = () => {
+    if (timerId) {
+      clearInterval(timerId);
+    }
+    secondsElapsedInAction = 0;
+    actionIndex = actionIndex + 1;
+
+    if (actionIndex === actions.length) {
+      handleStop();
+      speak("Your sequence is over!");
+    } else if (!actions[actionIndex].duration) {
+      // Skip zero duration actions (e.g. last placeholder one)
+      startAction();
+    } else {
+      speak(actions[actionIndex].name);
+      timerId = setInterval(() => {
+        secondsElapsedInAction = secondsElapsedInAction + 1;
+      }, 1000);
+    }
+  };
+
+  const speak = (text) => {
+    if (!text) return;
+    if (!speechSynthesis) {
+      alert(
+        "Sorry! Your device or browser doesn't allow me to make sound. Vois won't work for you on this device."
+      );
+    } else {
+      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+    }
+  };
+
+  const handleStop = () => {
+    clearInterval(timerId);
+    actionIndex = -1;
     isPlaying = false;
-    // TODO maybe otehr stuff?
-  };
-
-  const handleAddAnAction = () => {
-    actions = [...actions, { name: "new name", duration: 0 }];
-  };
-
-  const addPlaceholderAction = () => {
-    // if last action has a time of zero, update using handleAddAnAction
   };
 
   const handleChange = () => {
@@ -83,11 +122,14 @@
   };
 </script>
 
+{JSON.stringify($user?.uid)}
 <form
   class="stack lg:mt-5 text-lg lg:text-xl"
   on:submit={handleSave}
   on:input={handleChange}
 >
+  <!-- {secondsElapsedInAction}
+  {JSON.stringify($user)} -->
   <div class="control-bar flex justify-between">
     <button class="btn" type="button" on:click={handlePlayClick}>
       {#if isPlaying}
@@ -96,26 +138,35 @@
         <Play />
       {/if}
     </button>
-    <!-- TODO disable if not playing -->
     <button
       class="btn"
       type="button"
-      on:click={handleStopClick}
+      on:click={handleStop}
       disabled={!isPlaying && !isPaused}
     >
       <Stop />
     </button>
-    <!-- TODO only show if logged in, disable if no change-->
-    <button class="btn" type="submit" disabled={!hasChanged}>
+    <button class="btn" type="submit" disabled={!hasChanged || !$user}>
       <Save />
     </button>
   </div>
   <label class="sr-only" for="title">Title:</label>
-  <!-- TODO only show this if logged in -->
-  <input class="input" id="title" disabled={isPlaying} bind:value={title} />
+  {#if user}
+    <input
+      class="input my-1"
+      id="title"
+      placeholder="Sequence title"
+      disabled={isPlaying}
+      bind:value={title}
+    />
+  {/if}
   {#each actions as action, index (action.id)}
     <fieldset
-      class="stack py-1"
+      class="stack py-1 transition-all duration-500 {isPlaying &&
+        index + 1 >= actions.length &&
+        `hidden`} {actionIndex === index &&
+        isPlaying &&
+        'text-accent font-display text-3xl'}"
       animate:flip={{ duration: 300 }}
       transition:fly={{ y: 50, duration: 300 }}
     >
@@ -127,6 +178,7 @@
         <input
           disabled={isPlaying}
           type="text"
+          placeholder="Action"
           id="name_{index}"
           name="name_{index}"
           class="input"
@@ -135,15 +187,20 @@
         <label class="sr-only" for="duration_{index}"
           >Duration in seconds:</label
         >
-        <input
-          type="number"
-          id="duration_{index}"
-          name="duration_{index}"
-          min="0"
-          disabled={isPlaying}
-          class="input"
-          bind:value={action.duration}
-        />
+        {#if actionIndex === index && isPlaying}
+          <span class="input">{action.duration - secondsElapsedInAction}</span>
+        {:else}
+          <input
+            type="number"
+            placeholder="0"
+            id="duration_{index}"
+            name="duration_{index}"
+            min="0"
+            disabled={isPlaying}
+            class="input"
+            bind:value={action.duration}
+          />
+        {/if}
       </div>
       {#if !isPlaying}
         <div

@@ -1,8 +1,10 @@
 <script>
+  import { postUser } from "./utils/fetchers";
   // FirebaseUI config.
   var uiConfig = {
-    signInSuccessUrl: "/timer",
-    signInFlow: "popup",
+    signInFlow: "redirect",
+    signInSuccessUrl: "/sequences",
+
     signInOptions: [
       // Leave the lines as is for the providers you want to offer your users.
       // firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -20,6 +22,19 @@
     // Privacy policy url/callback.
     privacyPolicyUrl: function () {
       window.location.assign("/privacy");
+    },
+    callbacks: {
+      signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+        var user = authResult.user;
+        var isNewUser = authResult.additionalUserInfo.isNewUser;
+        if (isNewUser) {
+          postUser(user.uid, user.email).then(() => {
+            window.location.href = "/timer";
+          });
+        } else {
+          return true;
+        }
+      },
     },
   };
 

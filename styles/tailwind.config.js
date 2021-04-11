@@ -95,6 +95,9 @@ module.exports = {
           },
         },
       },
+      outline: {
+        accent: `2px solid ${colors.paradisePink}`,
+      },
     },
   },
   variants: {

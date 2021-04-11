@@ -31,3 +31,7 @@ button:focus:not(:focus-visible),
 a:focus:not(:focus-visible) {
   outline: none;
 }
+
+h1 {
+  @apply font-strong text-xl;
+}
