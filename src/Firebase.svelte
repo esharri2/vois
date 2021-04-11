@@ -4,7 +4,7 @@
   import "firebase/firestore";
   import "firebase/database";
   import * as firebaseui from "firebaseui";
-  // import "firebaseui/dist/firebaseui.css";
+  import "firebaseui/dist/firebaseui.css";
   var config = {
     apiKey: "AIzaSyDClk8PLXUm8MsNjTSjaezm5QrRBBU5qBc",
     authDomain: "vois-80945.firebaseapp.com",

@@ -26,11 +26,6 @@
     actions.push({ name: "", duration: "", id: new Date().getTime() });
   }
 
-  // $: actions.forEach(action => {
-  //   action.duration = parseInt(action.duration, 10);
-  //   console.log("hi")
-  // })
-
   // Progress to next action when elapsed time is equal to current action duration
   $: if (
     isPlaying &&
@@ -122,15 +117,14 @@
   };
 </script>
 
-{JSON.stringify($user?.uid)}
 <form
-  class="stack lg:mt-5 text-lg lg:text-xl"
+  class="stack lg:mt-5"
   on:submit={handleSave}
   on:input={handleChange}
 >
   <!-- {secondsElapsedInAction}
   {JSON.stringify($user)} -->
-  <div class="control-bar flex justify-between">
+  <div class="control-bar flex justify-between pb-2">
     <button class="btn" type="button" on:click={handlePlayClick}>
       {#if isPlaying}
         <Pause />
@@ -150,19 +144,26 @@
       <Save />
     </button>
   </div>
-  <label class="sr-only" for="title">Title:</label>
   {#if user}
-    <input
-      class="input my-1"
-      id="title"
-      placeholder="Sequence title"
-      disabled={isPlaying}
-      bind:value={title}
-    />
+    <div >
+      <label class="uppercase text-m font-strong" for="title">Title</label>
+      <input
+        class="input text-lg lg:text-xl"
+        id="title"
+        placeholder="Sequence title"
+        disabled={isPlaying}
+        bind:value={title}
+      />
+    </div>
   {/if}
+   <!-- <div class="grid grid-cols-custom-4 gap-x-1 uppercase text-m font-strong">
+     <span></span>
+     <span>Name</span>
+     <span>seconds</span>
+   </div> -->
   {#each actions as action, index (action.id)}
     <fieldset
-      class="stack py-1 transition-all duration-500 {isPlaying &&
+      class="stack text-lg lg:text-xl py-1 transition-all duration-500 {isPlaying &&
         index + 1 >= actions.length &&
         `hidden`} {actionIndex === index &&
         isPlaying &&
@@ -192,7 +193,7 @@
         {:else}
           <input
             type="number"
-            placeholder="0"
+            placeholder="s"
             id="duration_{index}"
             name="duration_{index}"
             min="0"
