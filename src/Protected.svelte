@@ -4,6 +4,7 @@
 
   let authCheckComplete = false;
   $: if ($user?.uid || $user === false) {
+    console.log($user)
     authCheckComplete = true;
   }
 </script>

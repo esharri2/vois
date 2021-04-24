@@ -4,6 +4,7 @@
   import { postSequence } from "./utils/fetchers";
   export let actions;
   export let user;
+  export let sequenceId;
 
   import Pause from "./icons/Pause.svelte";
   import Play from "./icons/Play.svelte";
@@ -36,7 +37,8 @@
 
   const handleSave = (event) => {
     event.preventDefault();
-    postSequence($user?.uid, { title, actions });
+    debugger;
+    postSequence($user?.uid, { title, actions }, sequenceId);
     hasChanged = false;
   };
 

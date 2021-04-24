@@ -24,8 +24,8 @@ export const getSequences = async (userId) => {
           return obj;
         });
         const sortedSequences = sequences.sort((a, b) => {
-          const nameA = a.title.toUpperCase(); 
-          const nameB = b.title.toUpperCase(); 
+          const nameA = a.title.toUpperCase();
+          const nameB = b.title.toUpperCase();
           if (nameA < nameB) {
             return -1;
           }
@@ -44,11 +44,13 @@ export const getSequences = async (userId) => {
 };
 
 // TODO does this need to return something?
-export const postSequence = (userId, actions) => {
+export const postSequence = (userId, actions, sequenceId) => {
   if (typeof userId !== "string" || typeof actions !== "object") {
     throw new Error("Arguments not correct type");
   }
-  const sequenceListRef = window.db.ref(`users/${userId}/sequences`);
+  const sequenceListRef = window.db.ref(
+    `users/${userId}/sequences${sequenceId ? `/${sequenceId}` : ""}`
+  );
   const newSequenceRef = sequenceListRef.push();
   newSequenceRef.set(actions);
 };
@@ -56,5 +58,9 @@ export const postSequence = (userId, actions) => {
 export const postUser = (userId, email) =>
   window.db.ref(`users/${userId}`).set({ email });
 
-export const deleteSequence = (userId, sequenceId) => 
+export const getSequence = (userId, sequenceId) => {
+  window.db.ref(`users/${userId}/sequences/${sequenceId}`).get();
+};
+
+export const deleteSequence = (userId, sequenceId) =>
   window.db.ref(`users/${userId}/sequences/${sequenceId}`).remove();

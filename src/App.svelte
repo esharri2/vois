@@ -1,6 +1,7 @@
 <script>
   import Timer from "./Timer.svelte";
   import Loader from "./Loader.svelte";
+  import Protected from "./Protected.svelte";
   import { user } from "./stores.js";
   import { onMount } from "svelte";
 
@@ -13,6 +14,9 @@
   $: if (user || user === false) {
     authCheckComplete = true;
   }
+
+  let promise;
+  
   onMount(() => {
     sequenceId = new URLSearchParams(window.location.search).get("id") || false;
   });
@@ -21,7 +25,7 @@
 {#if !authCheckComplete || sequenceId === undefined}
   <Loader />
 {:else if authCheckComplete && sequenceId === false}
-  <Timer actions={defaultActions} {user} />
+  <Timer actions={defaultActions} {user} {sequenceId} />
 {:else}
   {#await promise}
     <p>...waiting</p>

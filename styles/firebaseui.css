@@ -5,6 +5,17 @@
     background-color: #020122 !important;
 }
 
-#firebaseui-auth-container button.firebaseui-idp-button {
-    @apply text-light;
+#firebaseui-auth-container button, .firebaseui-idp-text{
+    @apply text-light font-body;
 }
+
+.firebaseui-idp-text {
+    color: #F3FCF0 !important;
+}
+
+
+
+/* #firebaseui-auth-container button.firebaseui-idp-google span{
+    @apply text-light;
+
+} */

@@ -1,2 +1,6 @@
-
-<div class="mt-4">Loading</div>
+<div class="loader">
+  <p class="sr-only">Loading</p>
+  <div />
+  <div />
+  <div />
+</div>

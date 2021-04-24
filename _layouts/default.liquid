@@ -10,7 +10,7 @@ nav:
   {% render 'head', site: site, page: page, title: title %}
   <body class='bg-light text-dark font-body max-w-screen-md m-auto px-1 lg:px-3'>
     <div data-firebase></div>
-    <div data-firebase-auth-check></div>
+    <div data-firebase-auth-check {% if page.url == "/" %}class="hidden"{% endif %}></div>
     {% render 'ie-notice'%}
     {% unless page.url == "/"%}
       {% render 'header', title: site.title, nav: nav %}

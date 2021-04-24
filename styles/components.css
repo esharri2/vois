@@ -1,9 +1,10 @@
 .btn {
-  @apply bg-accent text-light flex justify-center items-center flex-col py-1 lg:py-2 transition-all rounded-lg;
+  @apply bg-accent text-light flex justify-center items-center py-1 lg:py-2 transition-all rounded-lg;
   box-shadow: 0px 5px #8b0c27;
 }
 
-.btn:hover, .btn:focus-visible {
+.btn:hover,
+.btn:focus-visible {
   @apply bg-accentMedium text-lightMedium;
   box-shadow: 0 4px #6f0a1f;
 }
@@ -46,3 +47,44 @@
   @apply bg-lightMedium outline-none;
 }
 
+/**** Loader *****/
+@keyframes sideToSide {
+  from {
+    transform: translateX(var(--start, 25px));
+    opacity: .7;
+  }
+  to {
+    transform: translateX(var(--end, -25px));
+    @apply bg-accentMedium;
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion) {
+  .loader:after {
+    content: "Loading";
+  }
+
+  .loader div {
+    display: none !important;
+  }
+}
+
+.loader {
+  margin: 0 auto;
+  @apply flex flex-col items-center justify-center py-5;
+}
+
+.loader div {
+  @apply bg-accent mt-2;
+  height: 2px;
+  width: min(30vw, 150px);
+  animation: sideToSide 1.25s alternate infinite ease-in-out;
+}
+
+.loader div:nth-of-type(2) {
+  animation-duration: 1s;
+}
+
+.loader div:nth-of-type(3) {
+  animation-duration: .75s;
+}
