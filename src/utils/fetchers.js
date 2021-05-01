@@ -14,7 +14,6 @@ export const getSequences = async (userId) => {
             .reduce((a, b) => a + b, 0);
           const minutes = `${Math.floor(durationInSeconds / 60)}`.padStart(
             2,
-
             0
           );
           const seconds = `${durationInSeconds - minutes * 60}`.padStart(2, 0);
@@ -44,23 +43,41 @@ export const getSequences = async (userId) => {
 };
 
 // TODO does this need to return something?
-export const postSequence = (userId, actions, sequenceId) => {
-  if (typeof userId !== "string" || typeof actions !== "object") {
+export const postSequence = (userId, sequence, sequenceId) => {
+  if (typeof userId !== "string" || typeof sequence !== "object") {
     throw new Error("Arguments not correct type");
   }
-  const sequenceListRef = window.db.ref(
-    `users/${userId}/sequences${sequenceId ? `/${sequenceId}` : ""}`
-  );
-  const newSequenceRef = sequenceListRef.push();
-  newSequenceRef.set(actions);
+  if (sequenceId) {
+    const sequenceListRef = window.db.ref(
+      
+      
+      `users/${userId}/sequences/${sequenceId}`
+    
+    
+    );
+    sequenceListRef.set(sequence);
+  } else {
+    const sequenceListRef = window.db.ref(`users/${userId}/sequences/`);
+    const newSequenceRef = sequenceListRef.push();
+    newSequenceRef.set(sequence);
+  }
 };
 
 export const postUser = (userId, email) =>
   window.db.ref(`users/${userId}`).set({ email });
 
-export const getSequence = (userId, sequenceId) => {
-  window.db.ref(`users/${userId}/sequences/${sequenceId}`).get();
-};
+export const getSequence = (userId, sequenceId) =>
+  new Promise((resolve, reject) => {
+    window.db
+      .ref(`users/${userId}/sequences/${sequenceId}`)
+      .get()
+      .then((data) => {
+        resolve(data.val());
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 
 export const deleteSequence = (userId, sequenceId) =>
   window.db.ref(`users/${userId}/sequences/${sequenceId}`).remove();

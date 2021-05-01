@@ -5,6 +5,7 @@
   export let actions;
   export let user;
   export let sequenceId;
+  export let title;
 
   import Pause from "./icons/Pause.svelte";
   import Play from "./icons/Play.svelte";
@@ -14,14 +15,17 @@
   import Down from "./icons/Down.svelte";
   import Delete from "./icons/Delete.svelte";
 
-  let title = "";
   let hasChanged = false;
   let isPlaying = false;
   let isPaused = false;
   let secondsElapsedInAction = 0;
   let actionIndex = -1;
   let timerId;
+  let refs = [];
+  let showBackToTop = false;
 
+  $: showBackToTop = (refs.length > 0 && document.body.scrollHeight > document.body.clientHeight) 
+  
   // Add a placeholder action when the last action in the sequence has a duration entered
   $: if (actions[actions.length - 1].duration) {
     actions.push({ name: "", duration: "", id: new Date().getTime() });
@@ -37,7 +41,6 @@
 
   const handleSave = (event) => {
     event.preventDefault();
-    debugger;
     postSequence($user?.uid, { title, actions }, sequenceId);
     hasChanged = false;
   };
@@ -62,11 +65,14 @@
 
     if (actionIndex === actions.length) {
       handleStop();
+      // TODO scroll to top
       speak("Your sequence is over!");
+      window.scrollTo(0, 0);
     } else if (!actions[actionIndex].duration) {
       // Skip zero duration actions (e.g. last placeholder one)
       startAction();
     } else {
+      refs[actionIndex].scrollIntoView({behavior: "smooth", block: "center"}); 
       speak(actions[actionIndex].name);
       timerId = setInterval(() => {
         secondsElapsedInAction = secondsElapsedInAction + 1;
@@ -98,6 +104,7 @@
   const handleDelete = (index) => {
     const actionsCopy = [...actions];
     actionsCopy.splice(index, 1);
+    refs.splice(index, 1);
     actions = [...actionsCopy];
   };
 
@@ -124,8 +131,6 @@
   on:submit={handleSave}
   on:input={handleChange}
 >
-  <!-- {secondsElapsedInAction}
-  {JSON.stringify($user)} -->
   <div class="control-bar flex justify-between pb-2">
     <button class="btn" type="button" on:click={handlePlayClick}>
       {#if isPlaying}
@@ -158,13 +163,9 @@
       />
     </div>
   {/if}
-   <!-- <div class="grid grid-cols-custom-4 gap-x-1 uppercase text-m font-strong">
-     <span></span>
-     <span>Name</span>
-     <span>seconds</span>
-   </div> -->
   {#each actions as action, index (action.id)}
     <fieldset
+      bind:this={refs[index]}
       class="stack text-lg lg:text-xl py-1 transition-all duration-500 {isPlaying &&
         index + 1 >= actions.length &&
         `hidden`} {actionIndex === index &&
@@ -195,7 +196,7 @@
         {:else}
           <input
             type="number"
-            placeholder="s"
+            placeholder="sec"
             id="duration_{index}"
             name="duration_{index}"
             min="0"
@@ -232,3 +233,7 @@
     </fieldset>
   {/each}
 </form>
+{#if showBackToTop }
+  <a class="btn my-6" href="#header"><Up/><span class="px-2">Back to Top</span><Up/></a>
+{/if}
+ 

@@ -4,14 +4,13 @@
 
   let authCheckComplete = false;
   $: if ($user?.uid || $user === false) {
-    console.log($user)
     authCheckComplete = true;
   }
 </script>
 
 {#if authCheckComplete}
   {#if $user === false}
-    Sorry, you are not signed in. <a href="/">Sign in now.</a>
+    <p class="pt-2">Sorry, you are not signed in. <a class="font-strong underline text-accent" href="/">Sign in now.</a></p>
   {:else}
     <slot />
   {/if}

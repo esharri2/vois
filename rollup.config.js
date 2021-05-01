@@ -3,6 +3,8 @@ import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import { terser } from "rollup-plugin-terser";
 import postcss from "rollup-plugin-postcss";
+import { config } from "dotenv";
+import replace from "@rollup/plugin-replace";
 
 const production = process.env.NODE_ENV === "production";
 
@@ -19,7 +21,14 @@ export default {
       extract: true,
       extract: "main.css",
     }),
-
+    replace({
+      // stringify the object
+      __app: JSON.stringify({
+        env: {
+          ...config().parsed, // attached the .env config
+        },
+      }),
+    }),
     svelte({
       compilerOptions: {
         // enable run-time checks when not in production

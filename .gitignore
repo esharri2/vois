@@ -2,3 +2,4 @@
 _site/
 _temp/
 .DS_Store
+.env

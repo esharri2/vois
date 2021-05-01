@@ -35,3 +35,7 @@ a:focus:not(:focus-visible) {
 h1 {
   @apply font-strong text-xl lg:text-2xl;
 }
+
+h2 {
+  @apply font-strong text-lg lg:text-xl;
+}

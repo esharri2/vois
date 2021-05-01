@@ -4,6 +4,9 @@
 
   import Loader from "./Loader.svelte";
 
+  let isNew;
+  let isComplete;
+
   $: if ($user === false) {
     // Initialize the FirebaseUI Widget using Firebase.
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
@@ -12,7 +15,7 @@
   }
 
   $: if ($user) {
-    window.location.replace("/sequences");
+    window.location.replace(`${isNew ? '/timer' : '/sequences'}`);
   }
 
   let loading = true;
@@ -20,7 +23,7 @@
   const uiConfig = {
     signInFlow: "redirect",
     // signInSuccessUrl: "/sequences",
-    autoUpgradeAnonymousUsers: true,
+    // autoUpgradeAnonymousUsers: true,
     signInOptions: [
       // Leave the lines as is for the providers you want to offer your users.
       window.firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -39,13 +42,13 @@
       signInSuccessWithAuthResult: function (authResult, redirectUrl) {
         var user = authResult.user;
         var isNewUser = authResult.additionalUserInfo.isNewUser;
-        debugger;
         if (isNewUser) {
-          postUser(user.uid, user.email).then(() => {
-            window.location.href = "/timer";
+          isNew = true;
+          postUser(user.uid, user.email).then((data) => {
+            isComplete = true;
           });
         } else {
-          window.location.href = "/sequences";
+          isComplete = true;
           return true;
         }
       },

@@ -1,9 +1,10 @@
 <script>
   import { user } from "./stores.js";
   import Loader from "./Loader.svelte";
+  import Protected from "./Protected.svelte";
 
   let authCheckComplete = false;
-  $: if (user || user === false) {
+  $: if ($user || $user === false) {
     authCheckComplete = true;
   }
 
@@ -13,7 +14,6 @@
       .signOut()
       .then(
         () => {
-          console.log("Signed Out");
           window.location.replace("/");
         },
         (error) => {
@@ -26,10 +26,12 @@
   };
 </script>
 
+<Protected>
 <div class="stack mt-4">
   {#if !authCheckComplete}
     <Loader />
   {:else}
-    <button class="btn" on:click={handleLogout}>logout</button>
+    <button class="btn px-4" on:click={handleLogout}>Logout</button>
   {/if}
 </div>
+</Protected>

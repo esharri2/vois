@@ -13,6 +13,10 @@
     color: #F3FCF0 !important;
 }
 
+a.firebaseui-link {
+    @apply text-accent;
+}
+
 
 
 /* #firebaseui-auth-container button.firebaseui-idp-google span{
