@@ -14,7 +14,8 @@ const colors = {
 module.exports = {
   darkMode: "class",
   purge: {
-    content: ["./_site/**/*.html", "./_site/**/*.js"],
+    enabled: true,
+    content: ["./_site/**/*.html", "./src/**/*.svelte"],
   },
   theme: {
     boxShadow: {
