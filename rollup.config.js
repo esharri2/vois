@@ -3,7 +3,9 @@ import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import { terser } from "rollup-plugin-terser";
 import postcss from "rollup-plugin-postcss";
-import { config } from "dotenv";
+import dotenv from "dotenv";
+dotenv.config();
+
 import replace from "@rollup/plugin-replace";
 
 const production = process.env.NODE_ENV === "production";
@@ -25,7 +27,7 @@ export default {
       // stringify the object
       __app: JSON.stringify({
         env: {
-          ...config().parsed, // attached the .env config
+          ...process.env, // attached the .env config
         },
       }),
     }),
