@@ -6,6 +6,8 @@
   import * as firebaseui from "firebaseui";
   import "firebaseui/dist/firebaseui.css";
 
+  console.log(__app);
+
   var config = {
     apiKey: __app.env.API_KEY,
     authDomain: __app.env.AUTH_DOMAIN,
@@ -15,6 +17,8 @@
     messagingSenderId: __app.env.MESSAGING_SENDER_ID,
     appId: __app.env.APP_ID,
   };
+
+  console.log(config);
 
   // Initialize Firebase
   firebase.initializeApp(config);
