@@ -50,6 +50,9 @@
       isPlaying = false;
       isPaused = true;
     } else {
+      if (secondsElapsedInAction === 0 && actionIndex < 1) {
+        speak("start...")
+      }
       isPlaying = true;
       isPaused = false;
       startAction();
