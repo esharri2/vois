@@ -46,6 +46,7 @@
   };
 
   const handlePlayClick = (event) => {
+    speak("test")
     if (isPlaying) {
       isPlaying = false;
       isPaused = true;
