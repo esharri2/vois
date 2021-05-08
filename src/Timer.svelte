@@ -45,8 +45,7 @@
     hasChanged = false;
   };
 
-  const handlePlayClick = (event) => {
-    speak("test")
+  const handlePlayClick = () => {
     if (isPlaying) {
       isPlaying = false;
       isPaused = true;
