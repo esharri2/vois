@@ -23,9 +23,11 @@
   let timerId;
   let refs = [];
   let showBackToTop = false;
+  let wakeLock = null;
 
-  $: showBackToTop = (refs.length > 0 && document.body.scrollHeight > document.body.clientHeight) 
-  
+  $: showBackToTop =
+    refs.length > 0 && document.body.scrollHeight > document.body.clientHeight;
+
   // Add a placeholder action when the last action in the sequence has a duration entered
   $: if (actions[actions.length - 1].duration) {
     actions.push({ name: "", duration: "", id: new Date().getTime() });
@@ -45,14 +47,15 @@
     hasChanged = false;
   };
 
-  const handlePlayClick = () => {
+  const handlePlayClick = async () => {
     if (isPlaying) {
       isPlaying = false;
       isPaused = true;
     } else {
       if (secondsElapsedInAction === 0 && actionIndex < 1) {
-        speak("start...")
+        speak("start...");
       }
+      await lock();
       isPlaying = true;
       isPaused = false;
       startAction();
@@ -75,7 +78,7 @@
       // Skip zero duration actions (e.g. last placeholder one)
       startAction();
     } else {
-      refs[actionIndex].scrollIntoView({behavior: "smooth", block: "center"}); 
+      refs[actionIndex].scrollIntoView({ behavior: "smooth", block: "center" });
       speak(actions[actionIndex].name);
       timerId = setInterval(() => {
         secondsElapsedInAction = secondsElapsedInAction + 1;
@@ -94,7 +97,26 @@
     }
   };
 
+  const lock = async () => {
+    if ("wakeLock" in navigator) {
+      wakeLock = await navigator.wakeLock.request("screen");
+    } else {
+      console.log("wake lock not supported");
+    }
+  };
+
+  const unlock = () => {
+    if ("wakeLock" in navigator) {
+      wakeLock.release().then(() => {
+        wakeLock = null;
+      });
+    } else {
+      console.log("wake lock not supported");
+    }
+  };
+
   const handleStop = () => {
+    unlock();
     clearInterval(timerId);
     actionIndex = -1;
     isPlaying = false;
@@ -129,11 +151,7 @@
   };
 </script>
 
-<form
-  class="stack lg:mt-5"
-  on:submit={handleSave}
-  on:input={handleChange}
->
+<form class="stack lg:mt-5" on:submit={handleSave} on:input={handleChange}>
   <div class="control-bar flex justify-between pb-2">
     <button class="btn" type="button" on:click={handlePlayClick}>
       {#if isPlaying}
@@ -155,7 +173,7 @@
     </button>
   </div>
   {#if user}
-    <div >
+    <div>
       <label class="uppercase text-m font-strong" for="title">Title</label>
       <input
         class="input text-lg lg:text-xl"
@@ -236,7 +254,8 @@
     </fieldset>
   {/each}
 </form>
-{#if showBackToTop }
-  <a class="btn my-6" href="#header"><Up/><span class="px-2">Back to Top</span><Up/></a>
+{#if showBackToTop}
+  <a class="btn my-6" href="#header"
+    ><Up /><span class="px-2">Back to Top</span><Up /></a
+  >
 {/if}
- 
