@@ -1,21 +1,19 @@
 <head>
-    {% include 'meta',
-        page_title: title,
-        site_title: site.title,
-        page_description: description,
-        site_description: site.description,
-        author: site.author,
-        domain: site.domain,
-        meta_image: site.meta_image,
-        meta_image_alt: site.meta_image_alt
-        theme_color: site.theme_color
-    %}
-    <link
-        as="font"
-        crossorigin
-        href="/roboto-condensed-v19-latin-700italic.woff2"
-        rel="preload"
-        type="font/woff2" />
-    <link href="/main.css" rel="stylesheet" type="text/css" />
-    <script defer src="/main.js"></script>
+  {% include 'meta', page_title: title, site_title: site.title,
+  page_description: description, site_description: site.description, author:
+  site.author, domain: site.domain, meta_image: site.meta_image, meta_image_alt:
+  site.meta_image_alt theme_color: site.theme_color %}
+  <link
+    as="font"
+    crossorigin
+    href="/roboto-condensed-v19-latin-700italic.woff2"
+    rel="preload"
+    type="font/woff2" />
+  <link href="/main.css" rel="stylesheet" type="text/css" />
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js");
+    }
+  </script>
+  <script defer src="/main.js"></script>
 </head>

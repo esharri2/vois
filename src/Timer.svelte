@@ -2,10 +2,13 @@
   import { flip } from "svelte/animate";
   import { fade, fly } from "svelte/transition";
   import { postSequence } from "./utils/fetchers";
+import NoSleep from "nosleep.js";
+
   export let actions;
   export let user;
   export let sequenceId;
   export let title;
+
 
   import Pause from "./icons/Pause.svelte";
   import Play from "./icons/Play.svelte";
