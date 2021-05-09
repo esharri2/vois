@@ -258,7 +258,7 @@ import NoSleep from "nosleep.js";
   {/each}
 </form>
 {#if showBackToTop}
-  <a class="btn my-6" href="#header"
+  <a class="btn mt-6" href="#header"
     ><Up /><span class="px-2">Back to Top</span><Up /></a
   >
 {/if}

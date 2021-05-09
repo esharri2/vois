@@ -51,7 +51,6 @@ export default {
       dedupe: ["svelte"],
     }),
     commonjs(),
-
     production && terser(),
   ],
   watch: {

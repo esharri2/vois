@@ -8,7 +8,7 @@ nav:
 <!DOCTYPE html>
 <html lang="en">
   {% include 'head', site: site, page: page, title: title %}
-  <body class='bg-light text-dark font-body max-w-screen-md m-auto px-2 lg:px-3'>
+  <body class='bg-light text-dark font-body max-w-screen-md m-auto px-2 lg:px-3 pb-6'>
     <div data-firebase></div>
     <div data-firebase-auth-check {% if page.url == "/" %}class="hidden"{% endif %}></div>
     {% include 'ie-notice'%}
