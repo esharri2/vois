@@ -22,7 +22,7 @@
   // FirebaseUI config.
   const uiConfig = {
     signInFlow: "redirect",
-    // signInSuccessUrl: "/sequences",
+    signInSuccessUrl: "/sequences",
     // autoUpgradeAnonymousUsers: true,
     signInOptions: [
       // Leave the lines as is for the providers you want to offer your users.

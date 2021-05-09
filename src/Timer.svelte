@@ -2,13 +2,12 @@
   import { flip } from "svelte/animate";
   import { fade, fly } from "svelte/transition";
   import { postSequence } from "./utils/fetchers";
-import NoSleep from "nosleep.js";
+  import NoSleep from "nosleep.js";
 
   export let actions;
   export let user;
   export let sequenceId;
   export let title;
-
 
   import Pause from "./icons/Pause.svelte";
   import Play from "./icons/Play.svelte";
@@ -29,7 +28,7 @@ import NoSleep from "nosleep.js";
   let wakeLock = null;
 
   $: showBackToTop =
-    refs.length > 0 && document.body.scrollHeight > document.body.clientHeight;
+    refs.length > 0 && document.body.scrollHeight > (window.innerHeight + 300);
 
   // Add a placeholder action when the last action in the sequence has a duration entered
   $: if (actions[actions.length - 1].duration) {

@@ -36,7 +36,7 @@
 }
 
 .input {
-  @apply border-b-2 border-accent bg-transparent border-solid w-full bg-light p-1;
+  @apply transition-all border-b-2 border-accent bg-transparent border-solid w-full bg-light py-1 pr-1;
 }
 
 .input:focus {
@@ -44,7 +44,7 @@
 }
 
 .input:focus-visible {
-  @apply bg-lightMedium outline-none;
+  @apply bg-lightMedium outline-none pl-1;
 }
 
 /**** Loader *****/

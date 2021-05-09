@@ -5,10 +5,11 @@ nav:
   - link: /sequences
     label: Sequences
 ---
+{% assign year = helpers.currentYear() %}
 <!DOCTYPE html>
 <html lang="en">
   {% include 'head', site: site, page: page, title: title %}
-  <body class='bg-light text-dark font-body max-w-screen-md m-auto px-2 lg:px-3 pb-6'>
+  <body class='bg-light text-dark font-body max-w-screen-md m-auto px-2 lg:px-3 pb-2'>
     <div data-firebase></div>
     <div data-firebase-auth-check {% if page.url == "/" %}class="hidden"{% endif %}></div>
     {% include 'ie-notice'%}
@@ -18,5 +19,8 @@ nav:
     <main class="m-auto min-h-screen" id="main">
       {{content}}
     </main>
+    <footer class="flex justify-end text-l">
+      Copyright {{ helpers.currentYear }}<span aria-hidden="true" class="px-2">|</span><a class="uppercase font-display" href="/">VOIS</a><span aria-hidden="true" class="px-2">|</span><a class="uppercase font-strong" href="/contact">Contact</a>
+    </footer>
   </body>
 </html>

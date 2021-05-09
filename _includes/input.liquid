@@ -1,0 +1,10 @@
+
+<label class="block py-1">
+    {% assign classes = "" %}
+    {{label}}
+    {% if type == 'textarea'%}
+        <textarea class="{{classes}} input h-6" name="{{name}}" {% if required%} required {% endif %} {% if placeholder %} placeholder="{{placeholder}}" {% endif %}></textarea>
+    {% else %}
+        <input class="{{classes}} input" name="{{name}}" {% if placeholder %} placeholder="{{placeholder}}" {% endif %} {% if required%} required {% endif %} type="{{type | default: "text"}}" />
+    {% endif %}
+</label>
