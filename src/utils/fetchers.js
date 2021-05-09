@@ -42,24 +42,23 @@ export const getSequences = async (userId) => {
   });
 };
 
-// TODO does this need to return something?
-export const postSequence = (userId, sequence, sequenceId) => {
+export const postSequence = async (userId, sequence, sequenceId) => {
   if (typeof userId !== "string" || typeof sequence !== "object") {
     throw new Error("Arguments not correct type");
   }
   if (sequenceId) {
+    // Update
     const sequenceListRef = window.db.ref(
-      
-      
       `users/${userId}/sequences/${sequenceId}`
-    
-    
     );
     sequenceListRef.set(sequence);
+    return null;
   } else {
+    // Create new
     const sequenceListRef = window.db.ref(`users/${userId}/sequences/`);
     const newSequenceRef = sequenceListRef.push();
-    newSequenceRef.set(sequence);
+    await newSequenceRef.set(sequence);
+    return newSequenceRef.key;
   }
 };
 

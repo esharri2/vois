@@ -43,9 +43,14 @@
     startAction();
   }
 
-  const handleSave = (event) => {
+  const handleSave = async (event) => {
     event.preventDefault();
-    postSequence($user?.uid, { title, actions }, sequenceId);
+    const newSequenceId = await postSequence($user?.uid, { title: title || "", actions }, sequenceId);
+    debugger;
+    if (newSequenceId) {
+      sequenceId = newSequenceId;
+      // window.history.replaceState(null, null, `?id=${newSequenceId}`);
+    }
     hasChanged = false;
   };
 

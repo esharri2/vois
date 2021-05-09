@@ -9,8 +9,8 @@
   let authCheckComplete = false;
   let sequenceId = undefined;
   let defaultActions = [
-    { name: "My first action", duration: 3, id: 2342 },
-    { name: "My second action", duration: 4, id: 245245 },
+    { name: "My first action", duration: 5, id: 2342 },
+    { name: "My second action", duration: 5, id: 245245 },
   ];
   let promise;
 
