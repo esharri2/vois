@@ -49,7 +49,7 @@
     debugger;
     if (newSequenceId) {
       sequenceId = newSequenceId;
-      // window.history.replaceState(null, null, `?id=${newSequenceId}`);
+      window.history.replaceState(null, null, `?id=${newSequenceId}`);
     }
     hasChanged = false;
   };
