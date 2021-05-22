@@ -26,6 +26,8 @@
   let refs = [];
   let showBackToTop = false;
   let wakeLock = null;
+  const hasNativeWakeLock = ("wakeLock" in navigator)
+  const noSleep = !hasNativeWakeLock && new NoSleep();
 
   $: showBackToTop =
     refs.length > 0 && document.body.scrollHeight > (window.innerHeight + 300);
@@ -105,20 +107,20 @@
   };
 
   const lock = async () => {
-    if ("wakeLock" in navigator) {
+    if (hasNativeWakeLock) {
       wakeLock = await navigator.wakeLock.request("screen");
     } else {
-      console.log("wake lock not supported");
+      noSleep.enable();
     }
   };
 
   const unlock = () => {
-    if ("wakeLock" in navigator) {
+    if (hasNativeWakeLock) {
       wakeLock.release().then(() => {
         wakeLock = null;
       });
     } else {
-      console.log("wake lock not supported");
+      noSleep.disable();
     }
   };
 
