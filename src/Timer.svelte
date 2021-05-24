@@ -2,6 +2,8 @@
   import { flip } from "svelte/animate";
   import { fade, fly } from "svelte/transition";
   import { postSequence } from "./utils/fetchers";
+  import { speak } from "./utils/sounds"
+  import { settings } from "./stores"
   import NoSleep from "nosleep.js";
 
   export let actions;
@@ -48,7 +50,6 @@
   const handleSave = async (event) => {
     event.preventDefault();
     const newSequenceId = await postSequence($user?.uid, { title: title || "", actions }, sequenceId);
-    debugger;
     if (newSequenceId) {
       sequenceId = newSequenceId;
       window.history.replaceState(null, null, `?id=${newSequenceId}`);
@@ -62,7 +63,7 @@
       isPaused = true;
     } else {
       if (secondsElapsedInAction === 0 && actionIndex < 1) {
-        speak("start...");
+        speak("start...", $settings);
       }
       await lock();
       isPlaying = true;
@@ -81,28 +82,17 @@
     if (actionIndex === actions.length) {
       handleStop();
       // TODO scroll to top
-      speak("Your sequence is over!");
+      speak("Your sequence is over!", $settings);
       window.scrollTo(0, 0);
     } else if (!actions[actionIndex].duration) {
       // Skip zero duration actions (e.g. last placeholder one)
       startAction();
     } else {
       refs[actionIndex].scrollIntoView({ behavior: "smooth", block: "center" });
-      speak(actions[actionIndex].name);
+      speak(actions[actionIndex].name, $settings);
       timerId = setInterval(() => {
         secondsElapsedInAction = secondsElapsedInAction + 1;
       }, 1000);
-    }
-  };
-
-  const speak = (text) => {
-    if (!text) return;
-    if (!speechSynthesis) {
-      alert(
-        "Sorry! Your device or browser doesn't allow me to make sound. Vois won't work for you on this device."
-      );
-    } else {
-      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
     }
   };
 

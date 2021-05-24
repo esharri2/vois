@@ -42,6 +42,30 @@ export const getSequences = async (userId) => {
   });
 };
 
+export const postSetting = async (userId, key, rawValue) => {
+  let value = rawValue;
+  if (rawValue === "false") {
+    value = false;
+  }
+  const data = {};
+  data[key] = value;
+  await window.db.ref("users/" + userId + "/settings").set(data);
+  return getSettings(userId);
+};
+
+export const getSettings = (userId) =>
+  new Promise((resolve, reject) => {
+    window.db
+      .ref(`users/${userId}/settings/`)
+      .get()
+      .then((data) => {
+        resolve(data.val());
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+
 export const postSequence = async (userId, sequence, sequenceId) => {
   if (typeof userId !== "string" || typeof sequence !== "object") {
     throw new Error("Arguments not correct type");

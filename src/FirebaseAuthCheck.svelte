@@ -1,6 +1,7 @@
 <script>
-  import { user as userStore } from "./stores.js";
+  import { user as userStore, settings as settingsStore } from "./stores.js";
   import firebase from "firebase/app";
+  import { getSettings } from "./utils/fetchers";
 
   let isSignedIn;
 
@@ -11,6 +12,11 @@
           user.getIdToken().then(function (accessToken) {
             userStore.update(() => user);
           });
+          getSettings(user.uid).then((settings) => {
+            settingsStore.update(() => settings || {});
+          });
+
+          // TODO fetch settings and save that too
         } else {
           isSignedIn = false;
           userStore.update(() => false);

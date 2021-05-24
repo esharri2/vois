@@ -33,9 +33,9 @@ a:focus:not(:focus-visible) {
 }
 
 h1 {
-  @apply font-strong text-xl lg:text-2xl;
+  @apply font-strong text-xl lg:text-2xl mb-2;
 }
 
-h2 {
+h2, legend {
   @apply font-strong text-lg lg:text-xl;
 }
