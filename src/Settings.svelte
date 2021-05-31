@@ -36,6 +36,7 @@
   let rate;
 
   $: if ($user || $user === false) {
+    console.log($user)
     authCheckComplete = true;
   }
 
@@ -132,7 +133,8 @@
         {/each}
       </fieldset>
       <button disabled={saving} class="btn px-4" on:click={test}>Test</button>
-      <h1>Account</h1>
+      <h1 class="pt-4">Account</h1>
+      <p>You are logged in as {$user?.email || 'a guest' }.</p>
       <button class="btn px-4" on:click={handleLogout}>Logout</button>
     {/if}
   </div>
