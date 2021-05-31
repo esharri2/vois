@@ -16,25 +16,34 @@
     { label: "High", value: "high" },
   ];
   let volumes = [
-    { label: "Low", value: 0.75 },
-    { label: "Medium", value: 1 },
-    { label: "High", value: 1.5 },
+    { label: "System default", value: false },
+    { label: "Mute", value: "0" },
+    { label: "Low", value: "0.1" },
+    { label: "Medium", value: ".5" },
+    { label: "High", value: "1" },
   ];
+  let rates = [
+    { label: "System default", value: false },
+    { label: "Slow", value: ".5" },
+    { label: "Medium", value: "1" },
+    { label: "Fast", value: "1.5" },
+  ];
+
   let authCheckComplete = false;
   let saving = false;
   let pitch;
   let volume;
-
-  console.log(pitch)
+  let rate;
 
   $: if ($user || $user === false) {
     authCheckComplete = true;
   }
 
   $: if ($settings) {
-    const { pitch: pitchSetting, volume: volumeSetting } = $settings;
+    const { pitch: pitchSetting, rate: rateSetting, volume: volumeSetting } = $settings;
     pitch = pitchSetting ? pitchSetting : false;
-    volume = volumeSetting;
+    volume = volumeSetting ? volumeSetting : false;
+    rate = rateSetting ? rateSetting : false;
   }
 
   const onChange = async (event) => {
@@ -89,7 +98,7 @@
         {/each}
       </fieldset>
       <button disabled={saving} class="btn px-4" on:click={test}>Test</button>
-      <!-- <fieldset>
+      <fieldset class="mt-4">
         <legend>Voice volume</legend>
         {#each volumes as option}
           <label class="block">
@@ -99,14 +108,30 @@
               bind:group={volume}
               value={option.value}
               disabled={saving}
-              checked={$settings.volume === option.value}
               data-key="volume"
             />
             {option.label}
           </label>
         {/each}
       </fieldset>
-      <button disabled={saving} class="btn px-4" on:click={test}>Test</button> -->
+      <button disabled={saving} class="btn px-4" on:click={test}>Test</button>
+      <fieldset class="mt-4">
+        <legend>Voice speed</legend>
+        {#each rates as option}
+          <label class="block">
+            <input
+              type="radio"
+              on:change={onChange}
+              bind:group={rate}
+              value={option.value}
+              disabled={saving}
+              data-key="rate"
+            />
+            {option.label}
+          </label>
+        {/each}
+      </fieldset>
+      <button disabled={saving} class="btn px-4" on:click={test}>Test</button>
       <h1>Account</h1>
       <button class="btn px-4" on:click={handleLogout}>Logout</button>
     {/if}

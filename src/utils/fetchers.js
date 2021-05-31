@@ -43,13 +43,14 @@ export const getSequences = async (userId) => {
 };
 
 export const postSetting = async (userId, key, rawValue) => {
+  console.log(key, rawValue);
   let value = rawValue;
   if (rawValue === "false") {
     value = false;
   }
   const data = {};
   data[key] = value;
-  await window.db.ref("users/" + userId + "/settings").set(data);
+  await window.db.ref("users/" + userId + "/settings").update(data);
   return getSettings(userId);
 };
 

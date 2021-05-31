@@ -7,7 +7,7 @@ export const speak = (text, settings) => {
   } else {
     const instance = new SpeechSynthesisUtterance(text);
     if (settings) {
-      const { pitch, volume } = settings;
+      const { pitch, rate, volume } = settings;
       if (pitch && instance.pitch) {
         if (pitch === "low") {
           instance.pitch = 0.6;
@@ -20,7 +20,12 @@ export const speak = (text, settings) => {
         }
       }
       if (volume && instance.volume) {
+        console.log(instance.volume);
         instance.volume = Number(volume);
+      }
+      if (rate && instance.rate) {
+        console.log(instance.rate);
+        instance.rate = Number(rate);
       }
     }
     speechSynthesis.speak(instance);

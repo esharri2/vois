@@ -39,3 +39,7 @@ h1 {
 h2, legend {
   @apply font-strong text-lg lg:text-xl;
 }
+
+legend {
+  @apply border-dark border-solid border-b block py-1 mt-1 mb-2 w-full;
+}
